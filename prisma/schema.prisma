@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  phone        String?
+  locale       String    @default("sq")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  rides    Ride[]    @relation("DriverRides")
+  bookings Booking[] @relation("RiderBookings")
+}
+
+model Ride {
+  id       String @id @default(cuid())
+  driverId String
+  driver   User   @relation("DriverRides", fields: [driverId], references: [id])
+
+  originCity    String
+  originAddress String?
+  originLat     Float?
+  originLng     Float?
+
+  destinationCity    String
+  destinationAddress String?
+  destinationLat     Float?
+  destinationLng     Float?
+
+  departureTime  DateTime
+  pricePerSeat   Int
+  totalSeats     Int
+  availableSeats Int
+
+  notes  String?
+  status RideStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings Booking[]
+}
+
+model Booking {
+  id      String @id @default(cuid())
+  rideId  String
+  ride    Ride   @relation(fields: [rideId], references: [id])
+  riderId String
+  rider   User   @relation("RiderBookings", fields: [riderId], references: [id])
+
+  seatsRequested Int
+  status         BookingStatus @default(PENDING)
+  paymentMethod  PaymentMethod @default(CASH)
+
+  message String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([rideId, riderId])
+}
+
+model SearchLog {
+  id              String   @id @default(cuid())
+  originCity      String
+  destinationCity String
+  searchDate      DateTime
+  userId          String?
+  createdAt       DateTime @default(now())
+
+  @@index([originCity, destinationCity])
+  @@index([createdAt])
+}
+
+model City {
+  id        String  @id @default(cuid())
+  name      String  @unique
+  nameEn    String
+  nameSq    String
+  lat       Float
+  lng       Float
+  isPopular Boolean @default(false)
+}
+
+enum RideStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+}
