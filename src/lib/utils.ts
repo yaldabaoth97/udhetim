@@ -13,6 +13,9 @@ export function formatALL(amount: number): string {
   }).format(amount);
 }
 
+// Alias for consistency
+export const formatCurrency = formatALL;
+
 export function formatDate(date: Date, locale: string = "sq"): string {
   return new Intl.DateTimeFormat(locale === "sq" ? "sq-AL" : "en-US", {
     weekday: "short",
