@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { rideSchema } from "@/lib/validation";
 import { createRide, searchRides } from "@/services/ride.service";
+import { logSearch } from "@/services/search.service";
 
 // GET /api/rides - Search rides
 export async function GET(request: NextRequest) {
@@ -12,8 +13,21 @@ export async function GET(request: NextRequest) {
     const dateStr = searchParams.get("date");
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const sortBy = searchParams.get("sortBy") || "departureTime";
+    const sortOrder = searchParams.get("sortOrder") || "asc";
 
     const date = dateStr ? new Date(dateStr) : undefined;
+
+    // Log search for analytics (fire and forget)
+    if (origin && destination) {
+      const session = await auth();
+      logSearch({
+        originCity: origin,
+        destinationCity: destination,
+        searchDate: date || new Date(),
+        userId: session?.user?.id,
+      });
+    }
 
     const result = await searchRides({
       origin,
@@ -22,6 +36,15 @@ export async function GET(request: NextRequest) {
       page,
       limit,
     });
+
+    // Apply sorting (client can also sort, but we can optimize server-side)
+    if (sortBy === "price") {
+      result.rides.sort((a, b) =>
+        sortOrder === "asc"
+          ? a.pricePerSeat - b.pricePerSeat
+          : b.pricePerSeat - a.pricePerSeat
+      );
+    }
 
     return NextResponse.json(result);
   } catch (error) {
