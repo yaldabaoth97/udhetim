@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/navigation";
 
 interface Ride {
   id: string;

@@ -2,8 +2,8 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export function Header() {
@@ -14,11 +14,12 @@ export function Header() {
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Get the path without locale prefix
+  // Get the path without locale prefix for language switching
   const pathWithoutLocale = pathname.replace(/^\/(sq|en)/, "") || "/";
 
-  function switchLocale(newLocale: string) {
-    router.push(`/${newLocale}${pathWithoutLocale}`);
+  function switchLocale(newLocale: "sq" | "en") {
+    // Use the next-intl router which handles locale switching
+    router.replace(pathWithoutLocale, { locale: newLocale });
   }
 
   return (
