@@ -34,9 +34,11 @@
     "searchRides": "Search Rides",
     "origin": "From",
     "destination": "To",
+    "departure": "Departure",
     "departureTime": "Departure Time",
     "price": "Price per seat",
-    "seats": "Available Seats",
+    "seats": "seats",
+    "available": "Available",
     "totalSeats": "Total Seats",
     "notes": "Notes",
     "driver": "Driver",
@@ -45,6 +47,16 @@
     "rideCreated": "Ride posted successfully",
     "rideCancelled": "Ride cancelled",
     "currency": "Lek"
+  },
+  "booking": {
+    "title": "Book Ride",
+    "seats": "Number of Seats",
+    "message": "Message to Driver",
+    "messagePlaceholder": "Where would you like to be picked up? Any luggage?",
+    "total": "Total",
+    "paymentNote": "Payment is made in cash to the driver",
+    "submit": "Request Booking",
+    "success": "Booking request submitted successfully"
   },
   "bookings": {
     "title": "My Bookings",
@@ -58,10 +70,13 @@
     "cancelled": "Cancelled",
     "accept": "Accept",
     "decline": "Decline",
+    "cancelBooking": "Cancel Booking",
     "paymentMethod": "Payment Method",
     "cash": "Cash",
     "bookingRequested": "Booking requested",
-    "noBookings": "No bookings yet"
+    "noBookings": "No bookings yet",
+    "pendingBookings": "Pending Bookings",
+    "noPendingBookings": "No pending bookings"
   },
   "dashboard": {
     "title": "Driver Dashboard",

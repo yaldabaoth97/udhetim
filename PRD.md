@@ -708,12 +708,72 @@ GET /api/analytics/underserved
 
 ### Session Log
 
+#### 2024-12-31 - Session 4 (Milestone 4: Booking System)
+- **Completed:** Booking request and management system
+- **Files Created:**
+  - `src/services/booking.service.ts` - Create, accept, decline, cancel bookings
+  - `src/app/api/bookings/` - Booking CRUD and action endpoints
+  - `src/app/api/rides/[id]/bookings/` - Get pending bookings for ride
+  - `src/app/[locale]/rides/[id]/book/` - Booking request page
+  - `src/app/[locale]/bookings/` - My Bookings page for riders
+  - Updated driver dashboard with accept/decline functionality
+  - Tests: 29 new tests for booking service
+- **Key Features:**
+  - Booking state machine: PENDING → ACCEPTED/DECLINED/CANCELLED
+  - Atomic seat decrement on booking acceptance (using $transaction)
+  - Drivers can only accept/decline their ride's bookings
+  - Riders can cancel pending bookings
+  - PaymentMethod defaults to CASH (extensible for Stripe)
+- **Tests:** 123 total passing
+- **Next:** Milestone 5 (Driver Analytics)
+
+#### 2024-12-29 - Session 3 (Milestone 3: Search & Discovery)
+- **Completed:** a0e7a5a - feat: search logging and city autocomplete (Milestone 3)
+- **Files Created:**
+  - `src/services/search.service.ts` - Search logging, city autocomplete, analytics
+  - `src/app/api/cities/route.ts` - City autocomplete endpoint
+  - Tests: 13 new tests for search service
+- **Key Features:**
+  - Fire-and-forget search logging (non-blocking for performance)
+  - City autocomplete with locale-aware search (sq/en)
+  - Sorting options for search results (price, departure time)
+  - Analytics: getTopRoutes, getUnderservedRoutes for driver dashboard
+- **Tests:** 94 total passing
+- **Next:** Milestone 4 (Booking System)
+
+#### 2024-12-29 - Session 2 (Milestone 2: Ride Management)
+- **Completed:** 9a766f2 - feat: implement ride CRUD and management (Milestone 2)
+- **Files Created:**
+  - `src/services/ride.service.ts` - CRUD service with RideStatus enum
+  - `src/app/api/rides/` - Search, create, get, update, cancel endpoints
+  - `src/app/[locale]/rides/` - Search, new, detail, edit pages
+  - `src/app/[locale]/dashboard/rides/` - Driver ride management
+  - Tests: 46 new tests for ride service and validation
+- **Key Decisions:**
+  - Soft-delete via status change (CANCELLED) for audit trail
+  - Next.js 15 Promise params pattern used in route handlers
+  - Search returns only ACTIVE rides with available seats
+  - Drivers can only edit/cancel their own rides
+- **Tests:** 81 total passing
+- **Next:** Milestone 3 (Search & Discovery)
+
+#### 2024-12-29 - Session 1 (Milestones 0-1)
+- **Completed:** Scaffolding + Authentication
+- **Commits:**
+  - efe2c1e - chore: complete project scaffolding (Milestone 0)
+  - 93a91ab - feat: implement authentication system (Milestone 1)
+- **Key Fixes:**
+  - Downgraded to Prisma 5 (v7 breaking changes)
+  - Removed PrismaAdapter (not needed for credentials-only auth)
+  - Fixed timing attack vulnerability in registration
+- **Tests:** 35 passing at end of session
+
 #### 2024-12-29 - PRD Creation Session
 - **Starting Point:** Fresh project, no code yet
 - **Goal for Session:** Create comprehensive PRD and project structure
 - **Decisions Made:**
   - Project name: "udhetim" (Albanian for travel/journey)
-  - Tech stack: Next.js 14, PostgreSQL, Prisma, NextAuth.js
+  - Tech stack: Next.js 15, PostgreSQL, Prisma 5, NextAuth.js
   - MVP scope defined: auth, rides, bookings, search, analytics, i18n
   - Payment abstraction ready for Stripe but cash-only for MVP
 - **Architecture Notes:**
@@ -741,11 +801,11 @@ GET /api/analytics/underserved
 
 > **Agent: Use this checklist to track overall progress**
 
-- [ ] Milestone 0: Project Scaffolding
-- [ ] Milestone 1: Authentication System
-- [ ] Milestone 2: Ride Management
-- [ ] Milestone 3: Search & Discovery
-- [ ] Milestone 4: Booking System
+- [x] Milestone 0: Project Scaffolding
+- [x] Milestone 1: Authentication System
+- [x] Milestone 2: Ride Management
+- [x] Milestone 3: Search & Discovery
+- [x] Milestone 4: Booking System
 - [ ] Milestone 5: Driver Analytics Dashboard
 - [ ] Milestone 6: Internationalization & Polish
 - [ ] Milestone 7: Documentation & Deployment Prep

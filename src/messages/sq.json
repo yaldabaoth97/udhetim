@@ -34,9 +34,11 @@
     "searchRides": "Kerko Udhetimet",
     "origin": "Nga",
     "destination": "Drejt",
+    "departure": "Nisja",
     "departureTime": "Ora e Nisjes",
     "price": "Cmimi per vend",
-    "seats": "Vende te lira",
+    "seats": "vende",
+    "available": "Te disponueshem",
     "totalSeats": "Gjithsej vende",
     "notes": "Shenime",
     "driver": "Shoferi",
@@ -45,6 +47,16 @@
     "rideCreated": "Udhetimi u postua me sukses",
     "rideCancelled": "Udhetimi u anulua",
     "currency": "Lek"
+  },
+  "booking": {
+    "title": "Rezervo Udhetimin",
+    "seats": "Numri i vendeve",
+    "message": "Mesazh per Shoferin",
+    "messagePlaceholder": "Ku deshironi te merreni? Keni bagazhe?",
+    "total": "Totali",
+    "paymentNote": "Pagesa behet me cash te shoferi",
+    "submit": "Kerko Rezervim",
+    "success": "Kerkesa per rezervim u dergua me sukses"
   },
   "bookings": {
     "title": "Rezervimet e Mia",
@@ -58,10 +70,13 @@
     "cancelled": "Anuluar",
     "accept": "Prano",
     "decline": "Refuzo",
+    "cancelBooking": "Anulo Rezervimin",
     "paymentMethod": "Menyra e Pageses",
     "cash": "Cash",
     "bookingRequested": "Rezervimi u kerkua",
-    "noBookings": "Nuk keni rezervime"
+    "noBookings": "Nuk keni rezervime",
+    "pendingBookings": "Rezervime ne Pritje",
+    "noPendingBookings": "Nuk ka rezervime ne pritje"
   },
   "dashboard": {
     "title": "Paneli i Shoferit",
