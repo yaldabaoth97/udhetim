@@ -1,11 +1,11 @@
-# PRD: Udhetim - Albanian Ridesharing Platform
+# PRD: Hitch - Albanian Ridesharing Platform
 
 > **This document is both a requirements specification AND an execution prompt for autonomous AI development.**
 > The agent should be able to execute this project from start to finish using only this document.
 >
 > **Execution Mode:** Autonomous with subagent delegation
 > **Thinking Level:** Use ultrathink for architecture, think hard for implementation
-> **Project Name:** udhetim (Albanian for "travel/journey")
+> **Project Name:** hitch
 
 ---
 

@@ -8,7 +8,7 @@ import { Header } from "@/components/layout/Header";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Udhetim - Albanian Ridesharing",
+  title: "Hitch - Albanian Ridesharing",
   description: "Share rides across Albania",
 };
 

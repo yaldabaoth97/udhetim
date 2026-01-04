@@ -1,4 +1,4 @@
-# Udhetim - Albanian Ridesharing Platform
+# Hitch - Albanian Ridesharing Platform
 
 A bilingual (Albanian/English) ridesharing platform for intercity travel in Albania. Drivers post rides, riders search and book seats, and everyone saves money while reducing traffic.
 
@@ -115,7 +115,7 @@ src/
 
 ```bash
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/udhetim"
+DATABASE_URL="postgresql://user:password@localhost:5432/hitch"
 
 # NextAuth
 NEXTAUTH_URL="http://localhost:3000"
