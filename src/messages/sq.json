@@ -37,8 +37,10 @@
     "departure": "Nisja",
     "departureTime": "Ora e Nisjes",
     "price": "Cmimi per vend",
+    "pricePerSeat": "per vend",
     "seats": "vende",
-    "available": "Te disponueshem",
+    "available": "te lira",
+    "total": "gjithsej",
     "totalSeats": "Gjithsej vende",
     "notes": "Shenime",
     "driver": "Shoferi",
@@ -46,6 +48,7 @@
     "noRidesFound": "Nuk u gjeten udhetimet",
     "rideCreated": "Udhetimi u postua me sukses",
     "rideCancelled": "Udhetimi u anulua",
+    "departed": "I nisur",
     "currency": "Lek"
   },
   "booking": {

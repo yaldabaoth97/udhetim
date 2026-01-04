@@ -101,7 +101,10 @@ export default function BookRidePage({
   if (authStatus === "loading" || loading) {
     return (
       <main className="min-h-screen flex items-center justify-center">
-        <div>{t("common.loading")}</div>
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-gray-200 border-t-primary rounded-full animate-spin" />
+          <span className="text-gray-500">{t("common.loading")}</span>
+        </div>
       </main>
     );
   }
@@ -113,9 +116,20 @@ export default function BookRidePage({
   if (error && !ride) {
     return (
       <main className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <p className="text-destructive mb-4">{error}</p>
-          <Link href="/rides" className="text-primary hover:underline">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 mx-auto bg-red-50 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <p className="text-gray-600">{error}</p>
+          <Link
+            href="/rides"
+            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
             {t("common.back")}
           </Link>
         </div>
@@ -135,15 +149,26 @@ export default function BookRidePage({
 
   if (!canBook) {
     return (
-      <main className="min-h-screen p-4 max-w-md mx-auto">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground mb-4">
+      <main className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+            </svg>
+          </div>
+          <p className="text-gray-600">
             {isDriver && "You cannot book your own ride"}
             {isCancelled && "This ride has been cancelled"}
             {isPast && "This ride has already departed"}
             {noSeats && "No seats available"}
           </p>
-          <Link href={`/rides/${id}`} className="text-primary hover:underline">
+          <Link
+            href={`/rides/${id}`}
+            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
             {t("common.back")}
           </Link>
         </div>
@@ -152,101 +177,168 @@ export default function BookRidePage({
   }
 
   return (
-    <main className="min-h-screen p-4 max-w-md mx-auto">
-      <div className="mb-6">
-        <Link
-          href={`/rides/${id}`}
-          className="text-sm text-muted-foreground hover:text-foreground"
-        >
-          ← {t("common.back")}
-        </Link>
-      </div>
-
-      <h1 className="text-2xl font-bold mb-2">{t("booking.title")}</h1>
-      <p className="text-muted-foreground mb-6">
-        {ride.originCity} → {ride.destinationCity}
-      </p>
-
-      {/* Ride Summary */}
-      <div className="border border-input rounded-lg p-4 mb-6 bg-muted/50">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-muted-foreground">{t("rides.departure")}</span>
-          <span className="font-medium">{formatDate(new Date(ride.departureTime))}</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-muted-foreground">{t("rides.driver")}</span>
-          <span className="font-medium">{ride.driver.name}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">{t("rides.available")}</span>
-          <span className="font-medium">{ride.availableSeats} {t("rides.seats")}</span>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Seats Selection */}
-        <div>
-          <label htmlFor="seats" className="block text-sm font-medium mb-2">
-            {t("booking.seats")}
-          </label>
-          <select
-            id="seats"
-            value={seatsRequested}
-            onChange={(e) => setSeatsRequested(Number(e.target.value))}
-            className="w-full px-3 py-2 border border-input rounded-lg bg-background"
+    <main className="min-h-screen py-8 px-4">
+      <div className="max-w-lg mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <Link
+            href={`/rides/${id}`}
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-4"
           >
-            {Array.from({ length: ride.availableSeats }, (_, i) => i + 1).map((num) => (
-              <option key={num} value={num}>
-                {num} {num === 1 ? "seat" : "seats"}
-              </option>
-            ))}
-          </select>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            {t("common.back")}
+          </Link>
+          <h1 className="text-2xl font-semibold text-gray-900">{t("booking.title")}</h1>
         </div>
 
-        {/* Message */}
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium mb-2">
-            {t("booking.message")} <span className="text-muted-foreground">(optional)</span>
-          </label>
-          <textarea
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={t("booking.messagePlaceholder")}
-            rows={3}
-            maxLength={500}
-            className="w-full px-3 py-2 border border-input rounded-lg bg-background resize-none"
-          />
-          <p className="text-xs text-muted-foreground mt-1">{message.length}/500</p>
-        </div>
-
-        {/* Price Summary */}
-        <div className="border-t border-input pt-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-muted-foreground">
-              {seatsRequested} × {formatCurrency(ride.pricePerSeat)}
-            </span>
-            <span className="font-medium">{formatCurrency(totalPrice)}</span>
+        {/* Ride Summary Card */}
+        <div className="bg-white rounded-xl border border-gray-100 shadow-lg overflow-hidden mb-6">
+          <div className="p-5 border-b border-gray-100">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-primary" />
+                <span className="font-medium text-gray-900">{ride.originCity}</span>
+              </div>
+              <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="font-medium text-gray-900">{ride.destinationCity}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>{formatDate(new Date(ride.departureTime))}</span>
+            </div>
           </div>
-          <div className="flex justify-between items-center text-lg font-bold">
-            <span>{t("booking.total")}</span>
-            <span className="text-primary">{formatCurrency(totalPrice)}</span>
+          <div className="p-5 bg-gray-50 space-y-3">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-500">{t("rides.driver")}</span>
+              <span className="font-medium text-gray-900">{ride.driver.name}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-500">{t("rides.available")}</span>
+              <span className="font-medium text-gray-900">{ride.availableSeats} {t("rides.seats")}</span>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-2">{t("booking.paymentNote")}</p>
         </div>
 
-        {error && (
-          <p className="text-destructive text-sm">{error}</p>
-        )}
+        {/* Booking Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Seats Selection */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-5">
+            <label htmlFor="seats" className="block text-sm font-medium text-gray-700 mb-3">
+              {t("booking.seats")}
+            </label>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setSeatsRequested(Math.max(1, seatsRequested - 1))}
+                disabled={seatsRequested <= 1}
+                className="w-10 h-10 rounded-lg border border-gray-200 bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                </svg>
+              </button>
+              <div className="flex-1 text-center">
+                <span className="text-3xl font-semibold text-gray-900">{seatsRequested}</span>
+                <p className="text-xs text-gray-500 mt-1">{seatsRequested === 1 ? "seat" : "seats"}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSeatsRequested(Math.min(ride.availableSeats, seatsRequested + 1))}
+                disabled={seatsRequested >= ride.availableSeats}
+                className="w-10 h-10 rounded-lg border border-gray-200 bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 disabled:opacity-50"
-        >
-          {submitting ? t("common.loading") : t("booking.submit")}
-        </button>
-      </form>
+          {/* Message */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-lg p-5">
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+              {t("booking.message")}
+            </label>
+            <p className="text-xs text-gray-500 mb-3">{t("booking.messagePlaceholder")}</p>
+            <textarea
+              id="message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Your message here..."
+              rows={3}
+              maxLength={500}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none"
+            />
+            <p className="text-xs text-gray-400 mt-2 text-right">{message.length}/500</p>
+          </div>
+
+          {/* Price Summary */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-lg overflow-hidden">
+            <div className="p-5 space-y-3">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-500">
+                  {seatsRequested} × {formatCurrency(ride.pricePerSeat)}
+                </span>
+                <span className="font-medium text-gray-900">{formatCurrency(totalPrice)}</span>
+              </div>
+              <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
+                <span className="font-semibold text-gray-900">{t("booking.total")}</span>
+                <span className="text-2xl font-bold text-primary">{formatCurrency(totalPrice)}</span>
+              </div>
+            </div>
+            <div className="px-5 py-3 bg-amber-50 border-t border-amber-100">
+              <div className="flex items-center gap-2 text-sm text-amber-700">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{t("booking.paymentNote")}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-lg">
+              <div className="flex items-center gap-2 text-sm text-red-600">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{error}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+          >
+            {submitting ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                {t("common.loading")}
+              </>
+            ) : (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                {t("booking.submit")} · {formatCurrency(totalPrice)}
+              </>
+            )}
+          </button>
+        </form>
+      </div>
     </main>
   );
 }

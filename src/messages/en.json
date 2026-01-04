@@ -37,8 +37,10 @@
     "departure": "Departure",
     "departureTime": "Departure Time",
     "price": "Price per seat",
+    "pricePerSeat": "per seat",
     "seats": "seats",
-    "available": "Available",
+    "available": "available",
+    "total": "total",
     "totalSeats": "Total Seats",
     "notes": "Notes",
     "driver": "Driver",
@@ -46,6 +48,7 @@
     "noRidesFound": "No rides found",
     "rideCreated": "Ride posted successfully",
     "rideCancelled": "Ride cancelled",
+    "departed": "Departed",
     "currency": "Lek"
   },
   "booking": {
