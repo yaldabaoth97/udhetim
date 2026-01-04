@@ -5,22 +5,43 @@ import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 
-function formatAlbanianPhone(value: string): string {
-  // Remove all non-digits
+function formatPhoneNumber(value: string): string {
+  // Check if user is typing an international number (starts with + or 00)
+  const isInternational = value.startsWith("+") || value.startsWith("00");
+
+  // Remove all non-digits except leading +
+  const hasPlus = value.startsWith("+");
   const digits = value.replace(/\D/g, "");
 
-  // Remove leading 355 if present (we'll add it back formatted)
-  const withoutCountry = digits.startsWith("355") ? digits.slice(3) : digits;
+  if (!digits) return hasPlus ? "+" : "";
 
+  // If starts with 00, treat as international (replace 00 with nothing, we'll add +)
+  const cleanDigits = digits.startsWith("00") ? digits.slice(2) : digits;
+
+  if (isInternational || cleanDigits.startsWith("355")) {
+    // International format: +XX XXX XXX XXXX (flexible grouping)
+    const limited = cleanDigits.slice(0, 15); // Max 15 digits for international
+
+    let formatted = "+";
+    if (limited.length <= 3) {
+      formatted += limited;
+    } else if (limited.length <= 6) {
+      formatted += `${limited.slice(0, 3)} ${limited.slice(3)}`;
+    } else if (limited.length <= 9) {
+      formatted += `${limited.slice(0, 3)} ${limited.slice(3, 6)} ${limited.slice(6)}`;
+    } else {
+      formatted += `${limited.slice(0, 3)} ${limited.slice(3, 6)} ${limited.slice(6, 9)} ${limited.slice(9)}`;
+    }
+    return formatted;
+  }
+
+  // Default: Albanian format +355 6X XXX XXXX
   // Remove leading 0 if present
-  const cleaned = withoutCountry.startsWith("0") ? withoutCountry.slice(1) : withoutCountry;
-
-  // Limit to 9 digits (Albanian mobile format: 6X XXX XXXX)
+  const cleaned = cleanDigits.startsWith("0") ? cleanDigits.slice(1) : cleanDigits;
   const limited = cleaned.slice(0, 9);
 
   if (!limited) return "";
 
-  // Format: +355 6X XXX XXXX
   let formatted = "+355 ";
   if (limited.length <= 2) {
     formatted += limited;
@@ -140,7 +161,7 @@ export default function RegisterPage() {
               name="phone"
               type="tel"
               value={phone}
-              onChange={(e) => setPhone(formatAlbanianPhone(e.target.value))}
+              onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
               placeholder="+355 6X XXX XXXX"
               autoComplete="tel"
               className="w-full px-4 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
