@@ -33,7 +33,7 @@ export default async function LocaleLayout({
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
             <Header />
-            <div className="pt-4">
+            <div className="pt-16 sm:pt-20">
               {children}
             </div>
           </NextIntlClientProvider>
