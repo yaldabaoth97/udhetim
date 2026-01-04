@@ -5,11 +5,40 @@ import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 
+function formatAlbanianPhone(value: string): string {
+  // Remove all non-digits
+  const digits = value.replace(/\D/g, "");
+
+  // Remove leading 355 if present (we'll add it back formatted)
+  const withoutCountry = digits.startsWith("355") ? digits.slice(3) : digits;
+
+  // Remove leading 0 if present
+  const cleaned = withoutCountry.startsWith("0") ? withoutCountry.slice(1) : withoutCountry;
+
+  // Limit to 9 digits (Albanian mobile format: 6X XXX XXXX)
+  const limited = cleaned.slice(0, 9);
+
+  if (!limited) return "";
+
+  // Format: +355 6X XXX XXXX
+  let formatted = "+355 ";
+  if (limited.length <= 2) {
+    formatted += limited;
+  } else if (limited.length <= 5) {
+    formatted += `${limited.slice(0, 2)} ${limited.slice(2)}`;
+  } else {
+    formatted += `${limited.slice(0, 2)} ${limited.slice(2, 5)} ${limited.slice(5)}`;
+  }
+
+  return formatted;
+}
+
 export default function RegisterPage() {
   const t = useTranslations();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [phone, setPhone] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -110,7 +139,9 @@ export default function RegisterPage() {
               id="phone"
               name="phone"
               type="tel"
-              placeholder={t("auth.phonePlaceholder")}
+              value={phone}
+              onChange={(e) => setPhone(formatAlbanianPhone(e.target.value))}
+              placeholder="+355 6X XXX XXXX"
               autoComplete="tel"
               className="w-full px-4 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             />
