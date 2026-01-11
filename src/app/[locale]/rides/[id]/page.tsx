@@ -79,10 +79,13 @@ export default function RideDetailPage({
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5 border-2 border-gray-200 border-t-primary rounded-full animate-spin" />
-          <span className="text-gray-500">{t("common.loading")}</span>
+      <main className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-12 h-12">
+            <div className="absolute inset-0 rounded-full border-4 border-muted" />
+            <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+          </div>
+          <span className="text-muted-foreground font-medium">{t("common.loading")}</span>
         </div>
       </main>
     );
@@ -90,22 +93,25 @@ export default function RideDetailPage({
 
   if (error || !ride) {
     return (
-      <main className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center space-y-4">
-          <div className="w-16 h-16 mx-auto bg-red-50 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      <main className="min-h-screen flex items-center justify-center p-4 bg-background">
+        <div className="text-center space-y-6">
+          <div className="w-20 h-20 mx-auto bg-destructive/10 rounded-full flex items-center justify-center">
+            <svg className="w-10 h-10 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
           </div>
-          <p className="text-gray-600">{error || t("errors.notFound")}</p>
+          <div>
+            <h2 className="text-xl font-semibold text-foreground mb-2">Ride not found</h2>
+            <p className="text-muted-foreground">{error || t("errors.notFound")}</p>
+          </div>
           <Link
             href="/rides"
-            className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
-            {t("common.back")}
+            Back to rides
           </Link>
         </div>
       </main>
@@ -116,88 +122,98 @@ export default function RideDetailPage({
   const isPast = new Date(ride.departureTime) < new Date();
 
   return (
-    <main className="min-h-screen py-8 px-4">
+    <main className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Back navigation */}
         <Link
           href="/rides"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
           {t("common.back")}
         </Link>
 
         {/* Main card */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-lg overflow-hidden">
-          {/* Header section */}
-          <div className="p-6 sm:p-8 border-b border-gray-100">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-              {/* Route info */}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    <span className="font-medium text-gray-900">{ride.originCity}</span>
-                  </div>
-                  <svg className="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <div className="w-2 h-2 rounded-full bg-green-500" />
-                    <span className="font-medium text-gray-900">{ride.destinationCity}</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span className="text-sm">{formatDate(new Date(ride.departureTime))}</span>
-                </div>
-              </div>
-
-              {/* Price badge */}
-              <div className="bg-gray-50 rounded-lg px-4 py-3 text-center sm:text-right">
-                <div className="text-2xl font-semibold text-gray-900">
-                  {formatCurrency(ride.pricePerSeat)}
-                </div>
-                <div className="text-xs text-gray-500 mt-0.5">{t("rides.pricePerSeat")}</div>
-              </div>
-            </div>
-
-            {/* Status badges */}
+        <div className="bg-card rounded-2xl border border-border shadow-lg overflow-hidden animate-fade-in-up">
+          {/* Header section with route */}
+          <div className="p-6 sm:p-8 border-b border-border">
+            {/* Status badge if cancelled or past */}
             {(isCancelled || isPast) && (
-              <div className={`mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${
+              <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium mb-4 ${
                 isCancelled
-                  ? "bg-red-50 text-red-600"
-                  : "bg-gray-100 text-gray-600"
+                  ? "bg-destructive/10 text-destructive"
+                  : "bg-muted text-muted-foreground"
               }`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${isCancelled ? "bg-red-500" : "bg-gray-400"}`} />
+                <div className={`w-2 h-2 rounded-full ${isCancelled ? "bg-destructive" : "bg-muted-foreground"}`} />
                 {isCancelled ? t("rides.rideCancelled") : t("rides.departed")}
               </div>
             )}
+
+            {/* Route visualization */}
+            <div className="flex items-start gap-5 mb-6">
+              {/* Route dots and line */}
+              <div className="flex flex-col items-center gap-1 pt-1">
+                <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-white" />
+                </div>
+                <div className="w-0.5 h-12 bg-gradient-to-b from-primary to-success" />
+                <div className="w-4 h-4 rounded-full bg-success flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-white" />
+                </div>
+              </div>
+
+              {/* Cities and time */}
+              <div className="flex-1 space-y-6">
+                <div>
+                  <div className="text-2xl font-bold text-foreground">{ride.originCity}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Departure</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-foreground">{ride.destinationCity}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Arrival</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Date and time badge */}
+            <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+              <div className="w-12 h-12 bg-card rounded-xl flex items-center justify-center shadow-sm">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-semibold text-foreground">
+                  {formatDate(new Date(ride.departureTime))}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Departure at {new Date(ride.departureTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Details section */}
           <div className="p-6 sm:p-8 space-y-6">
             {/* Driver info */}
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/5 rounded-full flex items-center justify-center flex-shrink-0 ring-1 ring-gray-100">
-                <span className="text-primary font-semibold text-lg">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center">
+                <span className="text-xl font-bold text-secondary">
                   {ride.driver.name.charAt(0).toUpperCase()}
                 </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{t("rides.driver")}</p>
-                <p className="font-medium text-gray-900">{ride.driver.name}</p>
+              <div className="flex-1">
+                <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">{t("rides.driver")}</div>
+                <div className="font-semibold text-foreground text-lg">{ride.driver.name}</div>
                 {ride.driver.phone && (
                   <a
                     href={`tel:${ride.driver.phone}`}
                     className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline mt-1"
                   >
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                     </svg>
                     {ride.driver.phone}
                   </a>
@@ -205,26 +221,34 @@ export default function RideDetailPage({
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="border-t border-gray-100" />
+            <div className="h-px bg-border" />
 
-            {/* Seats info */}
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+            {/* Seats and price row */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Seats */}
+              <div className="p-4 bg-muted/30 rounded-xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                  </svg>
+                  <span className="text-sm text-muted-foreground">{t("rides.seats")}</span>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-foreground">{ride.availableSeats}</span>
+                  <span className="text-sm text-muted-foreground">of {ride.totalSeats} available</span>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{t("rides.seats")}</p>
-                <div className="flex items-center gap-3">
-                  <span className="font-medium text-gray-900">
-                    {ride.availableSeats} {t("rides.available")}
-                  </span>
-                  <span className="text-gray-300">|</span>
-                  <span className="text-sm text-gray-500">
-                    {ride.totalSeats} {t("rides.total")}
-                  </span>
+
+              {/* Price */}
+              <div className="p-4 bg-primary/5 rounded-xl border border-primary/10">
+                <div className="flex items-center gap-3 mb-2">
+                  <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                  </svg>
+                  <span className="text-sm text-primary">{t("rides.pricePerSeat")}</span>
+                </div>
+                <div className="text-2xl font-bold text-primary">
+                  {formatCurrency(ride.pricePerSeat)}
                 </div>
               </div>
             </div>
@@ -232,12 +256,12 @@ export default function RideDetailPage({
             {/* Notes section */}
             {ride.notes && (
               <>
-                <div className="border-t border-gray-100" />
+                <div className="h-px bg-border" />
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">{t("rides.notes")}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed bg-gray-50 rounded-lg p-4">
-                    {ride.notes}
-                  </p>
+                  <div className="text-xs text-muted-foreground uppercase tracking-wide mb-3">{t("rides.notes")}</div>
+                  <div className="p-4 bg-muted/30 rounded-xl">
+                    <p className="text-foreground leading-relaxed">{ride.notes}</p>
+                  </div>
                 </div>
               </>
             )}
@@ -245,38 +269,46 @@ export default function RideDetailPage({
             {/* Action buttons */}
             {!isCancelled && !isPast && (
               <>
-                <div className="border-t border-gray-100" />
+                <div className="h-px bg-border" />
                 <div className="pt-2">
                   {isDriver ? (
                     <div className="flex gap-3">
                       <Link
                         href={`/rides/${ride.id}/edit`}
-                        className="flex-1 py-3 text-center text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:border-gray-300 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 py-3.5 text-sm font-medium text-foreground bg-muted border border-border rounded-xl hover:bg-muted/80 transition-colors"
                       >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                        </svg>
                         {t("common.edit")}
                       </Link>
                       <button
                         onClick={handleCancel}
                         disabled={cancelling}
-                        className="flex-1 py-3 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 py-3.5 text-sm font-medium text-destructive-foreground bg-destructive rounded-xl hover:bg-destructive/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
                         {cancelling ? (
-                          <span className="flex items-center justify-center gap-2">
+                          <>
                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             {t("common.loading")}
-                          </span>
+                          </>
                         ) : (
-                          t("common.cancel")
+                          <>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            {t("common.cancel")}
+                          </>
                         )}
                       </button>
                     </div>
                   ) : (
                     <Link
                       href={`/rides/${ride.id}/book`}
-                      className="flex items-center justify-center gap-2 w-full py-3.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 shadow-sm hover:shadow transition-all"
+                      className="flex items-center justify-center gap-2 w-full py-4 text-base font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-primary/90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all active:scale-[0.98]"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                       </svg>
                       {t("rides.book")} · {formatCurrency(ride.pricePerSeat)}
                     </Link>
