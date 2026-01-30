@@ -2,6 +2,43 @@
 
 A bilingual (Albanian/English) ridesharing platform for intercity travel in Albania. Drivers post rides, riders search and book seats, and everyone saves money while reducing traffic.
 
+## Regulatory Framework
+
+Hitch operates as a **cost-sharing coordination platform** under a clear legal framework that distinguishes it from commercial transport services.
+
+### Legal Basis
+
+Under Albanian Civil Code (Articles 877-900) and EU precedent established by the European Court of Justice in the BlaBlaCar ruling (Case C-390/18), cost-sharing arrangements are recognized as private civil agreements rather than commercial transport when:
+
+- **Contributions are capped at actual costs** - Passengers share only fuel, tolls, and vehicle wear expenses
+- **Drivers do not profit** - The driver pays their proportional share of trip costs
+- **The platform provides coordination, not transport** - Hitch is an Information Society Service (Law 10128/2009) that connects travelers, not a transport operator
+
+### How This Works in Practice
+
+| Aspect | Traditional Taxi/Rideshare | Hitch Cost-Sharing |
+|--------|---------------------------|-------------------|
+| Pricing | Driver/platform sets fare for profit | System calculates max based on actual costs |
+| Driver economics | Driver earns income | Driver saves money by sharing expenses |
+| Regulatory status | Licensed transport operator | Private civil agreement |
+| Platform role | Transport service provider | Software coordination service |
+
+### Monetization
+
+Hitch generates revenue through **software services decoupled from transport**:
+- Subscription fees for enhanced platform features
+- Identity verification services
+- Visibility boost tokens
+
+This structure ensures the platform operates as a legitimate Information Society Service while enabling sustainable business operations.
+
+### Relevant Legislation
+
+- **Albanian Civil Code, Art. 877-900** - Private contract framework for expense sharing
+- **Law 10128/2009** - Electronic Commerce / Information Society Services
+- **Law 124/2024** - Data Protection (GDPR-aligned)
+- **Law 87/2019** - Fiscalization scope (excludes non-commercial reimbursements)
+
 ## Features
 
 - **User Authentication** - Email/password registration with secure bcrypt hashing
